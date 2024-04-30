@@ -261,7 +261,7 @@ function App() {
 
 
   const handleClick = () => {
-    doc.save("foobar.pdf");
+    doc.save("invoice.pdf");
   };
   return (
     <div className="App">
