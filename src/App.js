@@ -171,7 +171,7 @@ function App() {
 
   const columnWidth = (doc.internal.pageSize.getWidth() - 30) / 2; 
   //two way column
-  let yposition = headerHeight + 100;
+  let yposition = headerHeight + 110;
   doc.setTextColor("#000000"); 
   doc.setFontSize(11);
   doc.text("Country Of Supply", col1X + 5, yposition); 
@@ -219,7 +219,7 @@ function App() {
   doc.text("36,000", twoColumnContent + 75, yposition + 10, { maxWidth: columnWidth } ); 
 
   //footer design
-  const footerHeight = 85;
+  const footerHeight = 70;
   const footerY = doc.internal.pageSize.getHeight() - footerHeight;
   const drawFooter = () => {
     const footerBackgroundColor = "#C6EBC5";
