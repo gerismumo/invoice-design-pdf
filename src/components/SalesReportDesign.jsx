@@ -7,7 +7,7 @@ const content = [
   { name: "Item 2", quantity: 1, cost: 15.50 },
   { name: "Item 1", quantity: 2, cost: 10.00 },
   { name: "Item 2", quantity: 1, cost: 15.50 },
-  { name: "Item 2", quantity: 1, cost: 15.50 },
+  { name: "Item 2ffffffffffffffffffffffffffffffffffffffffffffffttttttttttttttt", quantity: 1, cost: 15.50 },
   { name: "Item 1", quantity: 2, cost: 10.00 },
   { name: "Item 2", quantity: 1, cost: 15.50 },
   { name: "Item 2", quantity: 1, cost: 15.50 },
@@ -32,12 +32,13 @@ function SalesReportDesign() {
 
   //title
   const title = "Cashier Sales Report";
+const pageWidth = doc.internal.pageSize.getWidth();
   const fontSizeTitle = 24;
   const textWidthTitle = doc.getStringUnitWidth(title) * fontSizeTitle / doc.internal.scaleFactor;
   const xTitle = (doc.internal.pageSize.getWidth() - textWidthTitle) / 2;
   doc.setFontSize(fontSizeTitle);
-  doc.text(title, xTitle, 15);
-
+  doc.text(title, xTitle, 15, {maxWidth: pageWidth});
+ 
   //email
   const email = "company@example.com";
   const xEmail = 10; 
@@ -94,9 +95,9 @@ function SalesReportDesign() {
   content.forEach(item => {
     doc.setFontSize(12);
     doc.setTextColor(128);
-    doc.text(item.name, startX1, yPosition); 
-    doc.text(item.quantity.toString(), centerX, yPosition);
-    doc.text(item.cost.toFixed(2), startX3, yPosition); 
+    doc.text(item.name, startX1, yPosition, {maxWidth: centerX }); 
+    doc.text(item.quantity.toString(), centerX, yPosition , {maxWidth: centerX });
+    doc.text(item.cost.toFixed(2), startX3, yPosition , {maxWidth: centerX }); 
 
     yPosition += 8; 
 
