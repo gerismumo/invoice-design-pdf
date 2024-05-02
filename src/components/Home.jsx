@@ -20,6 +20,11 @@ const Home = () => {
             >
                 Profit Loss Report
             </Link>
+            <Link to="/balanceSheet"
+            className='bg-[#525CEB] text-[#ffffff] text-[23px] px-[20px] py-[8px] w-[500px] flex flex-row justify-center rounded-[6px] '
+            >
+                Balance Sheet
+            </Link>
         </div>
     </div>
   )

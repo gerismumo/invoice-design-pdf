@@ -1,23 +1,25 @@
 import { jsPDF } from "jspdf";
 
 const content = [
-  { name: "Sales Revenue", cost1: 56000.00, cost2: 44000.00 },
-  { name: "Service Revenue", cost1: 3200.00, cost2: 2700.00 },
-  { name: "Interest Revenue", cost1: 1000.00, cost2: 900.00 },
+  { name: "Cash", cost1: 56000.00, cost2: 44000.00 },
+  { name: "Accounts Receivable", cost1: 3200.00, cost2: 2700.00 },
+  { name: "Prepaid expenses", cost1: 1000.00, cost2: 900.00 },
+  { name: "Inventory", cost1: 1000.00, cost2: 900.00 },
+  { name: "Propert & Equipment", cost1: 1000.00, cost2: 900.00 },
 ];
 
 const expenses = [
-  {name: "Advertising ", cost1: 500.00, cost2: 740.00},
-  {name: "Insurance", cost1: 700.00, cost2: 600.00},
-  {name: "Travel", cost1: 1000.00, cost2: 900.00},
-  {name: "Wages", cost1: 10000.00, cost2: 7000.00},
+  {name: "Current liabilities ", cost1: 500.00, cost2: 740.00},
+  {name: "Accounts payable", cost1: 700.00, cost2: 600.00},
+  {name: "Accrued expenses", cost1: 1000.00, cost2: 900.00},
+  {name: "Unearned revenue", cost1: 10000.00, cost2: 7000.00},
 ]
 
-function ProfitLoss() {
+function BalanceSheet() {
   const doc = new jsPDF();
 
   //title
-  const title = "Sales & Report Statements";
+  const title = "Balance Sheet";
 const pageWidth = doc.internal.pageSize.getWidth();
   const fontSizeTitle = 24;
   const textWidthTitle = doc.getStringUnitWidth(title) * fontSizeTitle / doc.internal.scaleFactor;
@@ -55,7 +57,7 @@ const pageWidth = doc.internal.pageSize.getWidth();
   const center = (doc.internal.pageSize.getWidth() / 3) /2;
 
   //order summary
-  const orderSummary = "Revenue";
+  const orderSummary = "Assets";
   doc.setTextColor(0); 
   doc.setFontSize(18);
   doc.text(orderSummary, 10, 45);
@@ -110,7 +112,7 @@ const pageWidth = doc.internal.pageSize.getWidth();
 
   // yPosition; 
   doc.setTextColor(0);
-  doc.text("Total Revenue", startX1, yPosition);
+  doc.text("Total Assets", startX1, yPosition);
   doc.setTextColor(0);
   doc.text(totals.totalCost1.toFixed(2), centerX, yPosition); 
   doc.setTextColor(0);
@@ -124,7 +126,7 @@ const pageWidth = doc.internal.pageSize.getWidth();
   //menu items
 
   yPosition += 10;
-  const menuItemsTitle = "Expenses"
+  const menuItemsTitle = "Liabilities"
   doc.setFontSize(18);
   doc.setTextColor(0);
   doc.text(menuItemsTitle,10, yPosition);
@@ -165,7 +167,7 @@ const pageWidth = doc.internal.pageSize.getWidth();
 
   // yPosition; 
   doc.setTextColor(0);
-  doc.text("Total Expenses", startX1, yPosition);
+  doc.text("Total Liabilities", startX1, yPosition);
   doc.setTextColor(0);
   doc.text(expensesTotals.totalCost1.toFixed(2), centerX, yPosition); 
   doc.setTextColor(0);
@@ -177,15 +179,15 @@ const pageWidth = doc.internal.pageSize.getWidth();
   }
 
   //Tax summary
-//   yPosition += 10;
-//   doc.setFontSize(18);
-//   doc.setTextColor(0);
-//   doc.text("Tax Summary",10, yPosition);
+  yPosition += 10;
+  doc.setFontSize(18);
+  doc.setTextColor(0);
+  doc.text("Shareholder's Equity",10, yPosition);
 
-//   if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
-//     doc.addPage();
-//     yPosition = 15; 
-//   }
+  if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
+    doc.addPage();
+    yPosition = 15; 
+  }
 
   yPosition += 3;
   doc.line(10, yPosition, doc.internal.pageSize.getWidth() - 10, yPosition);
@@ -196,14 +198,14 @@ const pageWidth = doc.internal.pageSize.getWidth();
   }
 
   const incomeTax = [
-    {name: "Income before tax", cost1: 28820.00 , cost2: 218921.00},
-    {name: "Income tax expense", cost1: 1300.00, cost2: 1100.00},
+    {name: "Investment capital", cost1: 28820.00 , cost2: 218921.00},
+    {name: "Retained earnings", cost1: 1300.00, cost2: 1100.00},
   ]
 
   yPosition += 6;
   incomeTax.forEach(item => {
     doc.setFontSize(12);
-    doc.setTextColor(0);
+    doc.setTextColor(128);
     doc.text(item.name, startX1, yPosition); 
     doc.text(item.cost1.toFixed(2), centerX, yPosition); 
     doc.text(item.cost2.toFixed(2), startX3, yPosition); 
@@ -216,6 +218,23 @@ const pageWidth = doc.internal.pageSize.getWidth();
     }
   });
 
+  const ShareholderTotals = calculateTotals(expenses);
+
+  //display the total cost
+
+  // yPosition; 
+  doc.setTextColor(0);
+  doc.text("Shareholder's Equity", startX1, yPosition);
+  doc.setTextColor(0);
+  doc.text(ShareholderTotals.totalCost1.toFixed(2), centerX, yPosition); 
+  doc.setTextColor(0);
+  doc.text(ShareholderTotals.totalCost2.toFixed(2), startX3, yPosition);
+
+  if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
+    doc.addPage();
+    yPosition = 15; 
+  }
+
 //   yPosition += 3;
 //   doc.setFontSize(18);
 //   doc.setTextColor(0);
@@ -226,7 +245,7 @@ const pageWidth = doc.internal.pageSize.getWidth();
 //     yPosition = 15; 
 //   }
 
-
+yPosition +=5
   doc.line(10, yPosition, doc.internal.pageSize.getWidth() - 10, yPosition);
 
   if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
@@ -237,7 +256,7 @@ const pageWidth = doc.internal.pageSize.getWidth();
   //payment summary
 
   const paymentSummaryDetails = [
-    {name: "Net Profit(Loss)", cost1: 27520.00, cost2: 20555.00},
+    {name: "Balance", cost1: 27520.00, cost2: 20555.00},
   ]
 
   yPosition += 6;
@@ -347,4 +366,4 @@ const pageWidth = doc.internal.pageSize.getWidth();
   );
 }
 
-export default ProfitLoss;
+export default BalanceSheet;
