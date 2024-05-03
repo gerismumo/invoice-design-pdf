@@ -68,7 +68,7 @@ const Millenium = () => {
         doc.addPage();
         yPosition = 15; 
       }
-      
+
     yPosition += 8
     doc.setFontSize(11)
     doc.setTextColor("#000000"); 
@@ -241,13 +241,13 @@ const lineHeight = 5;
 
 
 doc.line(xPosition, yPosition, columnsWidth - 10, yPosition); 
-doc.text("Name", columnsWidth / 2, yPosition + lineHeight, { align: "center" });
+doc.text("Accounts Prepared By ", columnsWidth / 2, yPosition + lineHeight, { align: "center" });
 
 doc.line(columnsWidth + 10, yPosition, 2 * columnsWidth - 10, yPosition);
-doc.text("Sign", columnsWidth + columnsWidth / 2, yPosition + lineHeight, { align: "center" });
+doc.text("Authorised By", columnsWidth + columnsWidth / 2, yPosition + lineHeight, { align: "center" });
 
 doc.line(2 * columnsWidth + 10, yPosition, 3* columnsWidth - 10, yPosition); 
-doc.text("Stamp", 2 * columnsWidth + columnsWidth / 2, yPosition + lineHeight, { align: "center" });
+doc.text("Rubber Stamp", 2 * columnsWidth + columnsWidth / 2, yPosition + lineHeight, { align: "center" });
 if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
     doc.addPage();
     yPosition = 15; 
