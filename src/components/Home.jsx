@@ -25,6 +25,11 @@ const Home = () => {
             >
                 Balance Sheet
             </Link>
+            <Link to="/laborReport"
+            className='bg-[#525CEB] text-[#ffffff] text-[23px] px-[20px] py-[8px] w-[500px] flex flex-row justify-center rounded-[6px] '
+            >
+                Labor Report
+            </Link>
         </div>
     </div>
   )
