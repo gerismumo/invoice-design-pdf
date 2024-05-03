@@ -8,6 +8,7 @@ import BalanceSheet from "./components/BalanceSheet";
 import LaborReport from "./components/LaborReport";
 import CashFlow from "./components/CashFlow";
 import CustomerReport from "./components/CustomerReport"
+import Millenium from "./components/Millenium";
 function App() {
   
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/laborReport" element={<LaborReport />} />
         <Route path="/cashFlow" element={<CashFlow />} />
         <Route path="/customerReport" element={<CustomerReport />}/>
+        <Route path="/millemium" element={<Millenium/>}/>
       </Routes>
     </Router>
   );

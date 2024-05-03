@@ -40,6 +40,11 @@ const Home = () => {
             >
                 Customer Report
             </Link>
+            <Link to="/millemium"
+            className='bg-[#525CEB] text-[#ffffff] text-[23px] px-[20px] py-[8px] w-[500px] flex flex-row justify-center rounded-[6px] '
+            >
+                Millemium
+            </Link>
         </div>
     </div>
   )
