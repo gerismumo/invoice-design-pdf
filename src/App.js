@@ -7,6 +7,7 @@ import ProfitLoss from "./components/ProfitLoss";
 import BalanceSheet from "./components/BalanceSheet";
 import LaborReport from "./components/LaborReport";
 import CashFlow from "./components/CashFlow";
+import CustomerReport from "./components/CustomerReport"
 function App() {
   
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/balanceSheet" element={<BalanceSheet/> }/>
         <Route path="/laborReport" element={<LaborReport />} />
         <Route path="/cashFlow" element={<CashFlow />} />
+        <Route path="/customerReport" element={<CustomerReport />}/>
       </Routes>
     </Router>
   );

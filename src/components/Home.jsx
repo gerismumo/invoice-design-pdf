@@ -35,6 +35,11 @@ const Home = () => {
             >
                 Cash Flow Report
             </Link>
+            <Link to="/customerReport"
+            className='bg-[#525CEB] text-[#ffffff] text-[23px] px-[20px] py-[8px] w-[500px] flex flex-row justify-center rounded-[6px] '
+            >
+                Customer Report
+            </Link>
         </div>
     </div>
   )
