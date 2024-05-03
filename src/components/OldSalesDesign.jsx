@@ -1,6 +1,19 @@
 import { jsPDF } from "jspdf";
 
-
+const content = [
+  { name: "Item 1", quantity: 2, cost: 10.00 },
+  { name: "Item 2", quantity: 1, cost: 15.50 },
+  { name: "Item 1", quantity: 2, cost: 10.00 },
+  { name: "Item 2", quantity: 1, cost: 15.50 },
+  { name: "Item 1", quantity: 2, cost: 10.00 },
+  { name: "Item 2", quantity: 1, cost: 15.50 },
+  { name: "Item 2ffffffffffffffffffffffffffffffffffffffffffffffttttttttttttttt", quantity: 1, cost: 15.50 },
+  { name: "Item 1", quantity: 2, cost: 10.00 },
+  { name: "Item 2", quantity: 1, cost: 15.50 },
+  { name: "Item 2", quantity: 1, cost: 15.50 },
+  { name: "Item 1", quantity: 2, cost: 10.00 },
+  { name: "Item 2", quantity: 1, cost: 15.50 },
+];
 
 const menuItems = [
   {name: "Cereal Wholemeal Bread ", quantity: 2, cost: 740.00},
@@ -14,7 +27,7 @@ const menuItems = [
   {name: "Vimto Sparkling", quantity: 1, cost: 120.00},
 ]
 
-function SalesReportDesign() {
+function OldSalesDesign() {
   const doc = new jsPDF();
 
   //title
@@ -71,75 +84,6 @@ const pageWidth = doc.internal.pageSize.getWidth();
   //horizontal line
   doc.line(10, 68, doc.internal.pageSize.getWidth() - 10, 68);
 
-  const content = [
-    { name: "Item 1", quantity: 2, cost: 10.00 },
-    { name: "Item 2", quantity: 1, cost: 15.50 },
-    { name: "Item 1", quantity: 2, cost: 10.00 },
-    { name: "Item 2", quantity: 1, cost: 15.50 },
-    { name: "Item 1", quantity: 2, cost: 10.00 },
-    { name: "Item 2", quantity: 1, cost: 15.50 },
-    { name: "Item 2", quantity: 1, cost: 15.50 },
-    { name: "Item 1", quantity: 2, cost: 10.00 },
-    { name: "Item 2", quantity: 1, cost: 15.50 },
-    { name: "Item 2", quantity: 1, cost: 15.50 },
-    { name: "Item 1", quantity: 2, cost: 10.00 },
-    { name: "Item 2", quantity: 1, cost: 15.50 },
-  ];
-
-  let yPosition = 75; 
-  let totalQuantity = 0;
-  let totalCost = 0;
-
-  content.forEach(entry => {
-    totalQuantity += entry.quantity;
-    totalCost += entry.cost;
-  });
-
-  const totalRow = {
-    name: "Total",
-    quantity: totalQuantity,
-    cost: totalCost
-  };
-  
-  content.push(totalRow);
-
-  content.forEach(entry => {
-    if (entry.name === "Total") {
-      entry.name = { content: "Total", styles: { textColor: "#1687A7", fontStyle: "bold", fontSize: 13  } };
-    }
-  });
-
-  doc.autoTable({
-    startY: yPosition,
-    columns: [
-      { header: "Name", dataKey: "name" },
-      { header: "Quantity", dataKey: "quantity" },
-      { header: "Cost", dataKey: "cost" },
-    ],
-    body: content,
-    theme: "striped",
-    styles: {
-      cellPadding: 3,
-      fontSize: 10,
-    },
-    headStyles: {
-      fillColor: "#1687A7", 
-      textColor: "#ffffff",
-      fontStyle: "bold", 
-      lineColor: "#28a745" ,
-      fontSize: 13 
-    },
-    bodyStyles: {
-      fillColor: "#ffffff", 
-      textColor: "#000000", 
-      lineColor: "#28a745" 
-    },
-    columnStyles: {
-      0: { cellWidth: 'wrap' }, 
-    },
-    margin: { top: 15 },
-    rowHeight: 20,
-  });
 
   // Set column widths
   const columnWidth = (doc.internal.pageSize.getWidth()) / 3;
@@ -147,10 +91,52 @@ const pageWidth = doc.internal.pageSize.getWidth();
   const centerX = doc.internal.pageSize.getWidth() / 2;
   const startX3 = doc.internal.pageSize.getWidth() - 30;
 
+  let yPosition = 75; 
+  content.forEach(item => {
+    doc.setFontSize(12);
+    doc.setTextColor(128);
+    doc.text(item.name, startX1, yPosition, {maxWidth: centerX }); 
+    doc.text(item.quantity.toString(), centerX, yPosition , {maxWidth: centerX });
+    doc.text(item.cost.toFixed(2), startX3, yPosition , {maxWidth: centerX }); 
+
+    yPosition += 8; 
+
+    if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
+      doc.addPage();
+      yPosition = 15; 
+    }
+  });
+
+  //calculate the total cost
+  function calculateTotals(content) {
+    let totalQuantity = 0;
+    let totalCost = 0;
+    content.forEach(item => {
+      totalQuantity += item.quantity;
+      totalCost += item.cost;
+    });
+    return { totalQuantity, totalCost };
+  }
+  const totals = calculateTotals(content);
+
+  //display the total cost
+
+  // yPosition; 
+  doc.setTextColor(0);
+  doc.text("Total", startX1, yPosition);
+  doc.setTextColor(0);
+  doc.text(totals.totalQuantity.toString(), centerX, yPosition); 
+  doc.setTextColor(0);
+  doc.text(totals.totalCost.toFixed(2), startX3, yPosition);
+
+  if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
+    doc.addPage();
+    yPosition = 15; 
+  }
+
   //menu items
 
-  yPosition = doc.autoTable.previous.finalY + 10;
-
+  yPosition += 10;
   const menuItemsTitle = "Menu Item"
   doc.setFontSize(18);
   doc.setTextColor(0);
@@ -170,42 +156,23 @@ const pageWidth = doc.internal.pageSize.getWidth();
 
   //menu items content
   yPosition += 6;
+  menuItems.forEach(item => {
+    doc.setFontSize(12);
+    doc.setTextColor(128);
+    doc.text(item.name, startX1, yPosition); 
+    doc.text(item.quantity.toString(), centerX, yPosition);
+    doc.text(item.cost.toFixed(2), startX3, yPosition); 
 
-  doc.autoTable({
-    startY: yPosition >= doc.internal.pageSize.getHeight() - 20 ? 15 : yPosition,
-    columns: [
-      { header: "Name", dataKey: "name" },
-      { header: "Quantity", dataKey: "quantity" },
-      { header: "Cost", dataKey: "cost" },
-    ],
-    body: menuItems,
-    theme: "striped",
-    styles: {
-      cellPadding: 3,
-      fontSize: 10,
-    },
-    headStyles: {
-      fillColor: "#1687A7", 
-      textColor: "#ffffff",
-      fontStyle: "bold", 
-      lineColor: "#28a745" ,
-      fontSize: 13 
-    },
-    bodyStyles: {
-      fillColor: "#ffffff", 
-      textColor: "#000000", 
-      lineColor: "#28a745" 
-    },
-    columnStyles: {
-      0: { cellWidth: 'wrap' }, 
-    },
-    margin: { top: 15 },
-    rowHeight: 20,
+    yPosition += 8; 
+
+    if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
+      doc.addPage();
+      yPosition = 15; 
+    }
   });
 
-
   //Tax summary
- yPosition = doc.autoTable.previous.finalY + 10;
+  yPosition += 3;
   doc.setFontSize(18);
   doc.setTextColor(0);
   doc.text("Tax Summary",10, yPosition);
@@ -228,42 +195,22 @@ const pageWidth = doc.internal.pageSize.getWidth();
     {name: "CTL", amount: 0.00},
   ]
 
-  //menu items content
   yPosition += 6;
+  taxSummaryDetails.forEach(item => {
+    doc.setFontSize(12);
+    doc.setTextColor(128);
+    doc.text(item.name, startX1, yPosition); 
+    doc.text(item.amount.toFixed(2), startX3, yPosition); 
 
-  doc.autoTable({
-    startY: yPosition >= doc.internal.pageSize.getHeight() - 20 ? 15 : yPosition,
-    columns: [
-      { header: "Name", dataKey: "name" },
-      { header: "Amount", dataKey: "amount" }
-    ],
-    body: taxSummaryDetails,
-    theme: "striped",
-    styles: {
-      cellPadding: 3,
-      fontSize: 10,
-    },
-    headStyles: {
-      fillColor: "#1687A7", 
-      textColor: "#ffffff",
-      fontStyle: "bold", 
-      lineColor: "#28a745" ,
-      fontSize: 13 
-    },
-    bodyStyles: {
-      fillColor: "#ffffff", 
-      textColor: "#000000", 
-      lineColor: "#28a745" 
-    },
-    columnStyles: {
-      0: { cellWidth: 'wrap' }, 
-    },
-    margin: { top: 15 },
-    rowHeight: 20,
+    yPosition += 8; 
+
+    if (yPosition >= doc.internal.pageSize.getHeight() - 20) { // Leave some space for margin
+      doc.addPage();
+      yPosition = 15; // Reset yPosition for new page
+    }
   });
 
-  yPosition = doc.autoTable.previous.finalY + 10;
-  
+  yPosition += 3;
   doc.setFontSize(18);
   doc.setTextColor(0);
   doc.text("Payment Summary",10, yPosition);
@@ -290,72 +237,20 @@ const pageWidth = doc.internal.pageSize.getWidth();
   ]
 
   yPosition += 6;
+  paymentSummaryDetails.forEach(payment => {
+    doc.setFontSize(12);
+    doc.setTextColor(128);
+    doc.text(payment.name, startX1, yPosition); 
+    doc.text(payment.transations.toString(), centerX, yPosition);
+    doc.text(payment.amount.toFixed(2), startX3, yPosition); 
 
-  let totalPaymentCost = 0;
+    yPosition += 8; 
 
-  paymentSummaryDetails.forEach(entry => {
-    totalPaymentCost += entry.amount;
-  });
-
-  const totalPaymentRow = {
-    name: "Total",
-    amount: totalPaymentCost,
-  };
-  
-  paymentSummaryDetails.push(totalPaymentRow);
-
-  paymentSummaryDetails.forEach(entry => {
-    if (entry.name === "Total") {
-      entry.name = { content: "Total", styles: { textColor: "#1687A7", fontStyle: "bold", fontSize: 13  } };
+    if (yPosition >= doc.internal.pageSize.getHeight() - 20) { // Leave some space for margin
+      doc.addPage();
+      yPosition = 15; // Reset yPosition for new page
     }
   });
-
-  doc.autoTable({
-    startY: yPosition,
-    columns: [
-      { header: "Name", dataKey: "name" },
-      { header: "Amount", dataKey: "amount" },
-    ],
-    body: paymentSummaryDetails,
-    theme: "striped",
-    styles: {
-      cellPadding: 3,
-      fontSize: 10,
-    },
-    headStyles: {
-      fillColor: "#1687A7", 
-      textColor: "#ffffff",
-      fontStyle: "bold", 
-      lineColor: "#28a745" ,
-      fontSize: 13 
-    },
-    bodyStyles: {
-      fillColor: "#ffffff", 
-      textColor: "#000000", 
-      lineColor: "#28a745" 
-    },
-    columnStyles: {
-      0: { cellWidth: 'wrap' }, 
-    },
-    margin: { top: 15 },
-    rowHeight: 20,
-  });
-
-
-  // paymentSummaryDetails.forEach(payment => {
-  //   doc.setFontSize(12);
-  //   doc.setTextColor(128);
-  //   doc.text(payment.name, startX1, yPosition); 
-  //   doc.text(payment.transations.toString(), centerX, yPosition);
-  //   doc.text(payment.amount.toFixed(2), startX3, yPosition); 
-
-  //   yPosition += 8; 
-
-  //   if (yPosition >= doc.internal.pageSize.getHeight() - 20) { // Leave some space for margin
-  //     doc.addPage();
-  //     yPosition = 15; // Reset yPosition for new page
-  //   }
-  // });
 
   function calculatePaymentSummaryTotals(paymentSummaryDetails) {
     let totalTransactions = 0;
@@ -368,18 +263,18 @@ const pageWidth = doc.internal.pageSize.getWidth();
   }
   const paymentTotal = calculatePaymentSummaryTotals(paymentSummaryDetails);
 
-  // doc.setTextColor(0);
-  // doc.text("Total", startX1, yPosition);
-  // doc.setTextColor(0);
-  // doc.text(paymentTotal.totalTransactions.toString(), centerX, yPosition); 
-  // doc.setTextColor(0);
-  // doc.text(paymentTotal.totalAmount.toFixed(2), startX3, yPosition);
+  doc.setTextColor(0);
+  doc.text("Total", startX1, yPosition);
+  doc.setTextColor(0);
+  doc.text(paymentTotal.totalTransactions.toString(), centerX, yPosition); 
+  doc.setTextColor(0);
+  doc.text(paymentTotal.totalAmount.toFixed(2), startX3, yPosition);
 
-  // if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
-  //   doc.addPage();
-  //   yPosition = 15; 
-  // }
-  yPosition = doc.autoTable.previous.finalY + 10;
+  if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
+    doc.addPage();
+    yPosition = 15; 
+  }
+
   //User Wise Sales
   yPosition += 10;
   doc.setFontSize(18);
@@ -450,4 +345,4 @@ const pageWidth = doc.internal.pageSize.getWidth();
   );
 }
 
-export default SalesReportDesign;
+export default OldSalesDesign;

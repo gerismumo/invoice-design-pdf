@@ -103,7 +103,7 @@ const pageWidth = doc.internal.pageSize.getWidth();
     columnStyles: {
       0: { cellWidth: 'wrap' }, 
     },
-    margin: { top:  yposition },
+    margin: { top: 15 },
     rowHeight: 20,
     createdHeaderCell: (cell, data) => {
         if (data.column.dataKey === "category" && cell.raw === "Total") {
