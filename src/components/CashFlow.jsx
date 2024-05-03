@@ -1,20 +1,5 @@
 import { jsPDF } from "jspdf";
 
-const content = [
-  { name: "Cash", cost1: 56000.00, cost2: 44000.00 },
-  { name: "Accounts Receivable", cost1: 3200.00, cost2: 2700.00 },
-  { name: "Prepaid expenses", cost1: 1000.00, cost2: 900.00 },
-  { name: "Inventory", cost1: 1000.00, cost2: 900.00 },
-  { name: "Propert & Equipment", cost1: 1000.00, cost2: 900.00 },
-];
-
-const expenses = [
-  {name: "Current liabilities ", cost1: 500.00, cost2: 740.00},
-  {name: "Accounts payable", cost1: 700.00, cost2: 600.00},
-  {name: "Accrued expenses", cost1: 1000.00, cost2: 900.00},
-  {name: "Unearned revenue", cost1: 10000.00, cost2: 7000.00},
-]
-
 function CashFlow() {
   const doc = new jsPDF();
 

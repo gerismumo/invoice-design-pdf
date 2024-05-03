@@ -352,7 +352,9 @@ yPosition +=5
   
 
   const handleClick = () => {
-    doc.save("profit_loss.pdf");
+    const pdfBlob = doc.output("blob");
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, "_blank", "profit_loss.pdf");
   };
 
   return (

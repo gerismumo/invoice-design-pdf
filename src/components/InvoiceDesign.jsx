@@ -261,7 +261,9 @@ function InvoiceDesign() {
 
 
   const handleClick = () => {
-    doc.save("invoice.pdf");
+    const pdfBlob = doc.output("blob");
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, "_blank", "invoice.pdf");
   };
   return (
     <div className="App">

@@ -329,7 +329,9 @@ const pageWidth = doc.internal.pageSize.getWidth();
   
 
   const handleClick = () => {
-    doc.save("report.pdf");
+    const pdfBlob = doc.output("blob");
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, "_blank", "report.pdf");
   };
 
   return (
