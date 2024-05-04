@@ -36,10 +36,20 @@ const Millenium = () => {
     doc.text("0114437J", xPosition + centerX + 30+ 5 + doc.getTextWidth("VAT No:"), yPosition, {maxWidth: centerX}); 
 
     yPosition += 8
-    const addressText = "P.O BOX 82675 - 80100 MOMBASA. TEL: 041-470001/2, FAX:041-47005 email: info@nyalicinemax.com";
-    doc.setFontSize(11);
+    const addressText = "P.O BOX 82675 - 80100 MOMBASA.";
     doc.text(addressText, xPosition + 3, yPosition, {maxWidth: pageWidth});
 
+    yPosition += 6
+    doc.setFontSize(11);
+    doc.text("TEL: 041-470001/2", xPosition + 3, yPosition, {maxWidth: pageWidth});
+
+    yPosition += 6
+    doc.setFontSize(11);
+    doc.text("FAX:041-47005", xPosition + 3, yPosition, {maxWidth: pageWidth});
+
+    yPosition += 6
+    doc.setFontSize(11);
+    doc.text("email: info@nyalicinemax.com", xPosition + 3, yPosition, {maxWidth: pageWidth});
 
     yPosition += 20
     const title2 = "LOCAL PURCHASE ORDER"
@@ -190,7 +200,7 @@ yPosition += 20
 
   yPosition = doc.autoTable.previous.finalY + 10;
 
-//   yPosition += 10;
+  yPosition += 10;
   doc.setFontSize(13)
   doc.setTextColor("#000000");
   doc.text("IMPORTANT NOTE:", xPosition, yPosition)
@@ -235,7 +245,7 @@ yPosition += 20
   }
 
   //three columns
-  yPosition += 25
+  yPosition += 20
   const columnsWidth = (doc.internal.pageSize.getWidth() - 10) / 3;
 const lineHeight = 5; 
 
@@ -248,7 +258,7 @@ doc.text("Authorised By", columnsWidth + columnsWidth / 2, yPosition + lineHeigh
 
 doc.line(2 * columnsWidth + 10, yPosition, 3* columnsWidth - 10, yPosition); 
 doc.text("Rubber Stamp", 2 * columnsWidth + columnsWidth / 2, yPosition + lineHeight, { align: "center" });
-if (yPosition >= doc.internal.pageSize.getHeight() - 20) { 
+if (yPosition >= doc.internal.pageSize.getHeight() - 10) { 
     doc.addPage();
     yPosition = 15; 
   }
